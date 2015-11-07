@@ -1,10 +1,15 @@
 fileFormatVersion: 2
 guid: 5e46c045bf3740b42b36068b759ea782
-timeCreated: 1446858512
-licenseType: Free
+timeCreated: 1446870170
+licenseType: Pro
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - sandMaterial: {instanceID: 0}
+  - woodMaterial: {instanceID: 0}
+  - goldMaterial: {instanceID: 0}
+  - franciumMaterial: {instanceID: 0}
+  - tearsMaterial: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
