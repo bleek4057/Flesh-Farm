@@ -46,6 +46,9 @@ public class GameManager : MonoBehaviour {
     //Mashing
     public Masher scrolledOverMasher;
 
+    //Infusinig
+    public Infuser scrolledOverInfuser;
+
     //Tutorial
     private int currentTipNumber = 0;
     /*0 - Welcome to your new human factory sir! This is your abduction pen! These are your humans. You're job is to oversee the research on these earthlings for our alien empire!
@@ -58,7 +61,7 @@ public class GameManager : MonoBehaviour {
     //UI Elements
     public Text moneyText;
     public Text selectedHumanText;
-    public Text selectedHumanMoneyPerCycle;
+    public Text selectedHumanResources;
     public GameObject buildPanel;
 
     public GameObject scrollOverPanel;
@@ -102,7 +105,7 @@ public class GameManager : MonoBehaviour {
             case 0:
                 //Welcome, these are humans
                 MoveTutorialText(abductionChamber.transform.position);
-                
+                tutorialText.text = "Welcome to Earthling Research Base 9 sir!\nHere we conduct tests on humans. A new batch has just arrived in the abduction pen! Build a habiat to move them into so we can start generating research points!";
                 break;
             case 1:
                 //Build a hab
@@ -144,11 +147,11 @@ public class GameManager : MonoBehaviour {
         moneyText.text = "$ " + money;
         if(humanSelected){
             selectedHumanText.text = selectedHuman.name;
-            selectedHumanMoneyPerCycle.text = "$ " + selectedHuman.GetComponent<Creature>().revenuePerCycle + "/ " + selectedHuman.GetComponent<Creature>().cycleLength + " s";
+            selectedHumanResources.text = selectedHuman.GetComponent<Creature>().resourcesString;
         }
         else
         {
-            selectedHumanMoneyPerCycle.text = "";
+            selectedHumanResources.text = "";
             selectedHumanText.text = "";
         }
         
@@ -158,8 +161,13 @@ public class GameManager : MonoBehaviour {
         }
         if (scrolledOverMasher != null)
         {
-            scrollOverText.GetComponent<Text>().text = scrolledOverMasher.gameObject.name;
-            //collectMoneyButton.GetComponent<Text>().text = scrolledOverBuilding.money + "";
+            scrollOverText.GetComponent<Text>().text = "People Masher";
+            collectMoneyButton.GetComponent<Text>().text = "Mash!";
+        }
+        if (scrolledOverInfuser != null)
+        {
+            scrollOverText.GetComponent<Text>().text = "Infusion Chamber";
+            collectMoneyButton.GetComponent<Text>().text = "Infuse!";
         }
     }
     public void CollectFromScrolledOverBuilding()
@@ -167,13 +175,19 @@ public class GameManager : MonoBehaviour {
         if(scrolledOverBuilding != null){
             money += scrolledOverBuilding.CollectMoney();
         }
+        if(scrolledOverInfuser != null){
+            print("Infuse!");
+        }
+        if(scrolledOverMasher != null){
+            print("Mash!");
+        }
     }
     void SpawnInitHumans()
     {
         for (int i = 0; i < initHumans; i++ )
         {
             //Close to the center of the spawning pen
-            Vector3 spawnPos = new Vector3(abductionChamber.transform.position.x + (Random.Range(-1.5f, 1.5f)), 1, abductionChamber.transform.position.z + (Random.Range(-1.5f, 1.5f)));
+            Vector3 spawnPos = new Vector3(abductionChamber.transform.position.x + (Random.Range(-3.5f, 3.5f)), 1, abductionChamber.transform.position.z + (Random.Range(-3.5f, 3.5f)));
             humans.Add(Instantiate(humanPrefab, spawnPos, Quaternion.identity) as GameObject);
         }
     }

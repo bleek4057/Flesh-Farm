@@ -14,13 +14,16 @@ public class Creature : MonoBehaviour {
     //Human stats
     private List<int> resources;//A list of resources attatched to this human, delimitted by |'s 
 	private bool inMasher;
+    public string resourcesString;
 
     //Human output
     public float cycleLength;//How long it takes between each drop of revenue from this human
     public float lastCycleEnd;
     public int revenuePerCycle;//How much money this human gives per drop of revenue
+
     public Building currentBuilding;
 	public Masher currentMasher;
+    public Infuser currentInfuser;
 
     //Human visuals
     public Renderer humanRenderer;
@@ -30,7 +33,7 @@ public class Creature : MonoBehaviour {
         gM = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
 		doodads = new List<GameObject>();
         resources = new List<int>();
-		ApplyResource (Random.Range(0, 4));
+		ApplyResource (Random.Range(0, 5));
 	}
 
 	void Update () {
@@ -46,13 +49,24 @@ public class Creature : MonoBehaviour {
             lastCycleEnd = Time.time;
         }
     }
+   
     public void SetBuilding(Building b)
     {
         currentBuilding = b;
+        currentMasher = null;
+        currentInfuser = null;
     }
 	public void SetBuilding(Masher m){
 		currentMasher = m;
+        currentBuilding = null;
+        currentInfuser = null;
 	}
+    public void SetBuilding(Infuser i)
+    {
+        currentInfuser = i;
+        currentBuilding = null;
+        currentMasher = null;
+    }
     void OnMouseDown()
     {
         gM.SetSelectedHuman(gameObject);
@@ -61,6 +75,7 @@ public class Creature : MonoBehaviour {
 	void ApplyResource(int resourceId){
         resources.Add(resourceId);
 
+        resourcesString += gM.GetComponent<Constants>().resourceNames[resourceId] + " ";
         //Set the human's material
         humanRenderer.material = gM.GetComponent<Constants>().GetMat(resourceId);
 

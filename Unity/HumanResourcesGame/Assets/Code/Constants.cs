@@ -14,6 +14,7 @@ public class Constants : MonoBehaviour {
     public const int LARGE_HAB = 2;
 
 	//Resources:
+    public string[] resourceNames;
 	//common
 	public const int SAND = 0;
 	public const int WOOD = 1;
