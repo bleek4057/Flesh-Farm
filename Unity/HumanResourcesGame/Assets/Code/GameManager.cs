@@ -110,8 +110,6 @@ public class GameManager : MonoBehaviour {
 	void Update () {
         //Check to see if we want to deselect the current human by clicking on the terrain
 
-
-
         //If we have selected a building type to place.....
 	    if(placingBuilding){
             //..and if we click....
