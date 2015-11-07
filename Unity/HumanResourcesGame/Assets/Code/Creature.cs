@@ -16,12 +16,15 @@ public class Creature : MonoBehaviour {
 
     //Human output
     public float cycleLength;//How long it takes between each drop of revenue from this human
+    public float lastCycleEnd;
     public int revenuePerCycle;//How much money this human gives per drop of revenue
+    public Building currentBuilding;
 
     //Human visuals
     public Renderer humanRenderer;
 
 	void Start () {
+        lastCycleEnd = Time.time;
         gM = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
 		doodads = new List<GameObject>();
         resources = new List<int>();
@@ -29,9 +32,23 @@ public class Creature : MonoBehaviour {
 	}
 
 	void Update () {
-
+        if(currentBuilding != null){
+            CheckForCycleEnd();
+        }
 	}
-
+    void CheckForCycleEnd()
+    {
+        if (Time.time >= lastCycleEnd + cycleLength)
+        {
+            currentBuilding.AddRevenue(revenuePerCycle);
+            lastCycleEnd = Time.time;
+            print("Creature added Revenue");
+        }
+    }
+    public void SetBuilding(Building b)
+    {
+        currentBuilding = b;
+    }
     void OnMouseDown()
     {
         gM.SetSelectedHuman(gameObject);

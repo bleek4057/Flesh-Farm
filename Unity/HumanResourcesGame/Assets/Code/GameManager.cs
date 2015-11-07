@@ -41,10 +41,16 @@ public class GameManager : MonoBehaviour {
     public int money;
     public int moneyPerMinute;
 
+    public Building scrolledOverBuilding;
+
     //UI Elements
     public Text moneyText;
     public Text selectedHumanText;
     public GameObject buildPanel;
+
+    public GameObject scrollOverPanel;
+    public GameObject scrollOverText;
+    public GameObject collectMoneyButton;
 
     void Awake()
     {
@@ -76,6 +82,18 @@ public class GameManager : MonoBehaviour {
         else
         {
             selectedHumanText.text = "";
+        }
+        
+
+        if(scrolledOverBuilding != null){
+            scrollOverText.GetComponent<Text>().text = gameObject.name;
+            collectMoneyButton.GetComponent<Text>().text = scrolledOverBuilding.money + "";
+        }
+    }
+    public void CollectFromScrolledOverBuilding()
+    {
+        if(scrolledOverBuilding != null){
+            money += scrolledOverBuilding.CollectMoney();
         }
     }
     void SpawnInitHumans()

@@ -6,6 +6,7 @@ public class Building : MonoBehaviour {
 
     //Util
     private GameManager gM;
+    private bool scrolledOver;
 
     //Building stats
     public int xPos, yPos;
@@ -13,6 +14,7 @@ public class Building : MonoBehaviour {
     public int comfortLevel;
 
     public int humanCount;
+    public int money;
 
     //Humans
     private List<GameObject> humans;
@@ -25,15 +27,33 @@ public class Building : MonoBehaviour {
 	void Update () {
 	
 	}
+    public int CollectMoney()
+    {
+        int moneyToCollect = money;
+        money = 0;
+        return moneyToCollect;
+    }
     void OnMouseOver()
     {
+        gM.scrolledOverBuilding = this;
+
         if(Input.GetButtonDown("Fire2")){
             print("Clicked on building: " + gameObject.name);
             AddHuman(gM.selectedHuman);
             gM.SetSelectedHuman(null);
-        }else{
-            
         }
+        if(!scrolledOver){
+            gM.scrollOverPanel.transform.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+        }
+    }
+    void OnMouseExit()
+    {
+        scrolledOver = false;
+        gM.scrollOverPanel.transform.position = new Vector2(3000, 3000);
+    }
+    public void AddRevenue(int revenue)
+    {
+        money += revenue;
     }
     void AddHuman(GameObject human)
     {
@@ -42,9 +62,11 @@ public class Building : MonoBehaviour {
                 humanCount++;
                 humans.Add(human);
                 MoveHumanToMe(human);
+                human.GetComponent<Creature>().SetBuilding(this);
             }
         }
     }
+    
     void MoveHumanToMe(GameObject human)
     {
         float maxX = GetComponent<Collider>().bounds.extents.x;
