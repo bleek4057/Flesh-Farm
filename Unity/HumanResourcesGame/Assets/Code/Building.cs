@@ -3,12 +3,17 @@ using System.Collections;
 
 public class Building : MonoBehaviour {
 
-	// Use this for initialization
+    //Building stats
+    public int xPos, yPos;
+    public int humanCapacity;
+    public int comfortLevel;
+
+    public int humanCount;
+
 	void Start () {
 	
 	}
 	
-	// Update is called once per frame
 	void Update () {
 	
 	}
