@@ -48,6 +48,7 @@ public class GameManager : MonoBehaviour {
 
     //Infusinig
     public Infuser scrolledOverInfuser;
+	private Infuser stupidNeededInfuser;
 
     //Tutorial
     private int currentTipNumber = 0;
@@ -68,6 +69,7 @@ public class GameManager : MonoBehaviour {
     public GameObject scrollOverText;
     public GameObject collectMoneyButton;
     public GameObject collectMoneyButtonText;
+	public GameObject infuserPanel;
 
     public RectTransform tutorialPanel;
     public Text tutorialText;
@@ -177,18 +179,18 @@ public class GameManager : MonoBehaviour {
         }
         if (scrolledOverInfuser != null)
         {
-            scrollOverText.GetComponent<Text>().text = "Infuser";
-
-            //print(scrolledOverMasher.humanCount);
-            if (scrolledOverInfuser.humanCount == scrolledOverInfuser.humanCapacity)
-            {
-                collectMoneyButton.gameObject.SetActive(true);
-                collectMoneyButtonText.GetComponent<Text>().text = "Infuse!";
-            }
-            else
-            {
-                collectMoneyButton.gameObject.SetActive(false);
-            }
+			scrollOverText.GetComponent<Text>().text = "Infuser";
+			
+			//print(scrolledOverMasher.humanCount);
+			if (scrolledOverInfuser.humanCount == scrolledOverInfuser.humanCapacity)
+			{
+				collectMoneyButton.gameObject.SetActive(true);
+				collectMoneyButtonText.GetComponent<Text>().text = "Infuse!";
+			}
+			else
+			{
+				collectMoneyButton.gameObject.SetActive(false);
+			}
         }
     }
     public void CollectFromScrolledOverBuilding()
@@ -197,12 +199,17 @@ public class GameManager : MonoBehaviour {
             money += scrolledOverBuilding.CollectMoney();
         }
         if(scrolledOverInfuser != null){
-            print("Infuse!");
+			infuserPanel.SetActive(true);
+			infuserPanel.transform.position = Input.mousePosition;
+			stupidNeededInfuser = scrolledOverInfuser;
         }
         if(scrolledOverMasher != null){
             scrolledOverMasher.Mash();
         }
     }
+	public void InfuserSelection(int id){
+		stupidNeededInfuser.GetComponent<Infuser>().Infuse (id);
+	}
     void SpawnInitHumans()
     {
         for (int i = 0; i < initHumans; i++ )
@@ -211,7 +218,7 @@ public class GameManager : MonoBehaviour {
             Vector3 spawnPos = new Vector3(abductionChamber.transform.position.x + (Random.Range(-3.5f, 3.5f)), 1, abductionChamber.transform.position.z + (Random.Range(-3.5f, 3.5f)));
             GameObject human = Instantiate(humanPrefab, spawnPos, Quaternion.identity) as GameObject;
             
-            human.GetComponent<Creature>().ApplyResource(Random.Range(0, 4));
+            //human.GetComponent<Creature>().ApplyResource(Random.Range(0, 4));
 
             humans.Add(human);
         }

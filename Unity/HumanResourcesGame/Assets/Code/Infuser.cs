@@ -10,7 +10,7 @@ public class Infuser : MonoBehaviour {
 
     //Building stats
     public int xPos, yPos;
-    public int humanCapacity;
+    public int humanCapacity = 1;
     public int comfortLevel;
 
     public int humanCount;
@@ -60,27 +60,41 @@ public class Infuser : MonoBehaviour {
     {
         //money += revenue;
     }
-    void AddHuman(GameObject human)
-    {
-        if (human != null)
-        {
-            if (humanCount < humanCapacity)
-            {
-                humanCount++;
-                humans.Add(human);
-                MoveHumanToMe(human);
-                human.GetComponent<Creature>().SetBuilding(this);
-            }
-        }
-    }
+	void AddHuman(GameObject human)
+	{
+		if(human != null){
 
-    void MoveHumanToMe(GameObject human)
-    {
-        float maxX = GetComponent<Collider>().bounds.extents.x;
-        float maxZ = GetComponent<Collider>().bounds.extents.z;
+			if(humanCount < humanCapacity){
+				human.GetComponent<Creature>().Leave();
+				humanCount++;
+				humans.Add(human);
+				MoveHumanToMe(human);
+				human.GetComponent<Creature>().SetBuilding(this);
+			}
+		}
+	}
+	
+	void MoveHumanToMe(GameObject human)
+	{
+		print("Moving human");
+		float maxX = GetComponent<Collider>().bounds.extents.x;
+		float maxZ = GetComponent<Collider>().bounds.extents.z;
+		
+		
+		Vector3 newPos = new Vector3(transform.position.x + Random.Range(-1.5f, 1.5f), transform.position.y, transform.position.z + Random.Range(-1.5f, 1.5f));
+		human.transform.position = newPos;
+	}
 
+	//method to infuse
+	public void Infuse(int resourceId)
+	{
+		humans [0].GetComponent<Creature> ().ApplyResource (resourceId);
+	}
 
-        Vector3 newPos = new Vector3(transform.position.x + Random.Range(-1.5f, 1.5f), transform.position.y, transform.position.z + Random.Range(-1.5f, 1.5f));
-        human.transform.position = newPos;
-    }
+	public void RemoveHuman(GameObject human){
+		if(human != null){
+			humanCount--;
+			humans.Remove(human);
+		}
+	}
 }

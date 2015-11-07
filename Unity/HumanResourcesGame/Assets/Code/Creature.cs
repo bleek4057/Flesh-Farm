@@ -71,6 +71,20 @@ public class Creature : MonoBehaviour {
         currentBuilding = null;
         currentMasher = null;
     }
+	public void Leave(){
+		if(currentBuilding != null){
+			currentBuilding.GetComponent<Building>().RemoveHuman(gameObject);
+			currentBuilding = null;
+		}
+		if(currentMasher != null){
+			currentMasher.GetComponent<Masher>().RemoveHuman(gameObject);
+			currentMasher = null;
+		}
+		if(currentInfuser != null){
+			currentInfuser.GetComponent<Infuser>().RemoveHuman(gameObject);
+			currentInfuser = null;
+		}
+	}
     void OnMouseDown()
     {
         gM.SetSelectedHuman(gameObject);

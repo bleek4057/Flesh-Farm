@@ -56,6 +56,7 @@ public class Masher : MonoBehaviour {
 	{
 		if(human != null){
 			if(humanCount < humanCapacity){
+				human.GetComponent<Creature>().Leave();
 				humanCount++;
 				humans.Add(human);
 				MoveHumanToMe(human);
@@ -108,5 +109,12 @@ public class Masher : MonoBehaviour {
 		for (int i = 0; i < rngDoodads; i++) {
 			child.doodads.Add(rngDoodads[Random.Range(0, rngDoodads.Count - 1)]);
 		}*/
+	}
+
+	public void RemoveHuman(GameObject human){
+		if(human != null){
+			humanCount--;
+			humans.Remove(human);
+		}
 	}
 }
