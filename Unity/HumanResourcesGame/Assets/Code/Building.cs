@@ -46,10 +46,11 @@ public class Building : MonoBehaviour {
     }
     void MoveHumanToMe(GameObject human)
     {
-        float maxX = GetComponent<MeshRenderer>().bounds.extents.x;
-        float maxZ = GetComponent<MeshRenderer>().bounds.extents.z;
+        float maxX = GetComponent<Collider>().bounds.extents.x;
+        float maxZ = GetComponent<Collider>().bounds.extents.z;
+        
 
-        Vector3 newPos = new Vector3(transform.position.x + Random.Range(-1.5f, 1.5f), 1, transform.position.z + Random.Range(-1.5f, 1.5f));
+        Vector3 newPos = new Vector3(transform.position.x + Random.Range(-1.5f, 1.5f), transform.position.y, transform.position.z + Random.Range(-1.5f, 1.5f));
         human.transform.position = newPos;
     }
 }

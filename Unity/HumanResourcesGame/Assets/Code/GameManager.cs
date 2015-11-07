@@ -77,7 +77,7 @@ public class GameManager : MonoBehaviour {
                         //round out clickLoc values
                         clickLoc.x = Mathf.Round(clickLoc.x);
                         clickLoc.z = Mathf.Round(clickLoc.z);
-                        clickLoc.y = 1.5f;
+                        clickLoc.y = 0;
 
                         SpawnHab(currentSpawnType, clickLoc);
                         placingBuilding = false;

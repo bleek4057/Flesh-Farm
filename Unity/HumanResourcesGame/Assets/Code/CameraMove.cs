@@ -32,7 +32,7 @@ public class CameraMove : MonoBehaviour {
 	}
 	void RotateAroundY(){
 		if(RightMouseDown()){
-			transform.RotateAround(transform.position, Vector3.up, Input.GetAxis("Horizontal") * rotateDamp * Time.deltaTime);
+			transform.RotateAround(transform.position, Vector3.up, Input.GetAxis("Mouse X") * rotateDamp * Time.deltaTime);
 		}
 	}
 	void AutoRotateAroundY(float speed){
