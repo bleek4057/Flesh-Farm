@@ -12,9 +12,10 @@ public class Creature : MonoBehaviour {
     private GameManager gM;
 
     //Human stats
-    private List<int> resources;//A list of resources attatched to this human, delimitted by |'s 
+
+    public List<int> resources;//A list of resources attatched to this human, delimitted by |'s 
 	private bool inMasher;
-    public string resourcesString;
+    public string resourcesString ="";
 
     //Human output
     public float cycleLength;//How long it takes between each drop of revenue from this human
@@ -27,13 +28,16 @@ public class Creature : MonoBehaviour {
 
     //Human visuals
     public Renderer humanRenderer;
+    
+    void Awake()
+    {
+        gM = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        resources = new List<int>();
 
+    }
 	void Start () {
         lastCycleEnd = Time.time;
-        gM = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
 		doodads = new List<GameObject>();
-        resources = new List<int>();
-		ApplyResource (Random.Range(0, 5));
 	}
 
 	void Update () {
@@ -72,31 +76,18 @@ public class Creature : MonoBehaviour {
         gM.SetSelectedHuman(gameObject);
     }
 	//get a resource's info based on an Id
-	void ApplyResource(int resourceId){
+	public void ApplyResource(int resourceId){
         resources.Add(resourceId);
-
         resourcesString += gM.GetComponent<Constants>().resourceNames[resourceId] + " ";
+
         //Set the human's material
         humanRenderer.material = gM.GetComponent<Constants>().GetMat(resourceId);
-
-        //Add to the human's doodads
-        doodads.Add(gM.GetComponent<Constants>().GetDoodad(resourceId));
+        currentMat = gM.GetComponent<Constants>().GetMat(resourceId);
         
-
-		/*ArrayList info = GameObject.FindGameObjectWithTag("GameManager").GetComponent<Constants>().GetResourceInfo (resourceId);
-
-		currentMat = info [0] as Material;
-		//print (currentMat.name);
-
-		GameObject[] parse = info [1] as GameObject[];
-
-		foreach (GameObject piece in parse) {
-			resourceDoodads.Add (piece);
-		}
-
-		//Apply texture 
-		Renderer render = GetComponent<Renderer> ();
-		render.material = currentMat;*/
+        
+        //Add to the human's doodads
+        
+        //doodads.Add(gM.GetComponent<Constants>().GetDoodad(resourceId));
 	}
 
 }

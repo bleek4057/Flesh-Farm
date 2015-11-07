@@ -49,6 +49,7 @@ public class Building : MonoBehaviour {
     void OnMouseExit()
     {
         scrolledOver = false;
+        gM.scrolledOverBuilding = null;
         gM.scrollOverPanel.transform.position = new Vector2(3000, 3000);
     }
     public void AddRevenue(int revenue)

@@ -22,12 +22,13 @@ public class Masher : MonoBehaviour {
 
 	void Start () {
         gM = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        humans = new List<GameObject>();
 	}
 
 	void Update () {
-		if (humanCount == humanCapacity) {
+		/*if (humanCount == humanCapacity) {
 			MashHumans(humans[0], humans[1]);
-		}
+		}*/
 	}
     void OnMouseOver()
     {
@@ -47,6 +48,7 @@ public class Masher : MonoBehaviour {
     void OnMouseExit()
     {
         scrolledOver = false;
+        gM.scrolledOverMasher = null;
         gM.scrollOverPanel.transform.position = new Vector2(3000, 3000);
     }
 	//steal Building methods
@@ -64,6 +66,7 @@ public class Masher : MonoBehaviour {
 	
 	void MoveHumanToMe(GameObject human)
 	{
+        print("Moving human");
 		float maxX = GetComponent<Collider>().bounds.extents.x;
 		float maxZ = GetComponent<Collider>().bounds.extents.z;
 		
@@ -71,7 +74,11 @@ public class Masher : MonoBehaviour {
 		Vector3 newPos = new Vector3(transform.position.x + Random.Range(-1.5f, 1.5f), transform.position.y, transform.position.z + Random.Range(-1.5f, 1.5f));
 		human.transform.position = newPos;
 	}
-
+    public void Mash()
+    {
+        print("Mash!");
+        MashHumans(humans[0], humans[1]);
+    }
 	//masher method, requires two people to be present in machine
 	void MashHumans(GameObject parent1, GameObject parent2)
 	{
@@ -81,9 +88,10 @@ public class Masher : MonoBehaviour {
 		//set random attributes
 		int randomMat = Random.Range (0, 1);
 		if (randomMat == 0) { //parent 1
-			childScript.currentMat = parent1.GetComponent<Creature>().currentMat;
+			childScript.ApplyResource(parent1.GetComponent<Creature>().resources[0]);
 		} else { //parent 2
-			childScript.currentMat = parent2.GetComponent<Creature>().currentMat;
+			childScript.ApplyResource(parent2.GetComponent<Creature>().resources[0]);
+
 		}
 
 		/*give them random doodads

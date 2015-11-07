@@ -67,6 +67,7 @@ public class GameManager : MonoBehaviour {
     public GameObject scrollOverPanel;
     public GameObject scrollOverText;
     public GameObject collectMoneyButton;
+    public GameObject collectMoneyButtonText;
 
     public RectTransform tutorialPanel;
     public Text tutorialText;
@@ -157,17 +158,37 @@ public class GameManager : MonoBehaviour {
         
         if(scrolledOverBuilding != null){
             scrollOverText.GetComponent<Text>().text = scrolledOverBuilding.gameObject.name;
-            collectMoneyButton.GetComponent<Text>().text = scrolledOverBuilding.money + "";
+            collectMoneyButtonText.GetComponent<Text>().text = scrolledOverBuilding.money + "";
         }
         if (scrolledOverMasher != null)
         {
             scrollOverText.GetComponent<Text>().text = "People Masher";
-            collectMoneyButton.GetComponent<Text>().text = "Mash!";
+
+            print(scrolledOverMasher.humanCount);
+            if (scrolledOverMasher.humanCount == scrolledOverMasher.humanCapacity)
+            {
+                collectMoneyButton.gameObject.SetActive(true);
+                collectMoneyButtonText.GetComponent<Text>().text = "Mash!";
+            }
+            else
+            {
+                collectMoneyButton.gameObject.SetActive(false);
+            }
         }
         if (scrolledOverInfuser != null)
         {
-            scrollOverText.GetComponent<Text>().text = "Infusion Chamber";
-            collectMoneyButton.GetComponent<Text>().text = "Infuse!";
+            scrollOverText.GetComponent<Text>().text = "Infuser";
+
+            //print(scrolledOverMasher.humanCount);
+            if (scrolledOverInfuser.humanCount == scrolledOverInfuser.humanCapacity)
+            {
+                collectMoneyButton.gameObject.SetActive(true);
+                collectMoneyButtonText.GetComponent<Text>().text = "Infuse!";
+            }
+            else
+            {
+                collectMoneyButton.gameObject.SetActive(false);
+            }
         }
     }
     public void CollectFromScrolledOverBuilding()
@@ -179,7 +200,7 @@ public class GameManager : MonoBehaviour {
             print("Infuse!");
         }
         if(scrolledOverMasher != null){
-            print("Mash!");
+            scrolledOverMasher.Mash();
         }
     }
     void SpawnInitHumans()
@@ -188,7 +209,11 @@ public class GameManager : MonoBehaviour {
         {
             //Close to the center of the spawning pen
             Vector3 spawnPos = new Vector3(abductionChamber.transform.position.x + (Random.Range(-3.5f, 3.5f)), 1, abductionChamber.transform.position.z + (Random.Range(-3.5f, 3.5f)));
-            humans.Add(Instantiate(humanPrefab, spawnPos, Quaternion.identity) as GameObject);
+            GameObject human = Instantiate(humanPrefab, spawnPos, Quaternion.identity) as GameObject;
+            
+            human.GetComponent<Creature>().ApplyResource(Random.Range(0, 4));
+
+            humans.Add(human);
         }
     }
 	void Update () {

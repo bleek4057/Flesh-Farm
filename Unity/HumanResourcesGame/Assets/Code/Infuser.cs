@@ -53,6 +53,7 @@ public class Infuser : MonoBehaviour {
     void OnMouseExit()
     {
         scrolledOver = false;
+        gM.scrolledOverInfuser = null;
         gM.scrollOverPanel.transform.position = new Vector2(3000, 3000);
     }
     public void AddRevenue(int revenue)
