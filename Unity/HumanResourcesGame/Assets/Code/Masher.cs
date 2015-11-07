@@ -7,6 +7,7 @@ public class Masher : MonoBehaviour {
 	//references to the arms
 	public GameObject leftArm;
 	public GameObject rightArm;
+	public GameObject childPrefab;
 
 	//stolen attributes
 	public int xPos, yPos;
@@ -24,7 +25,9 @@ public class Masher : MonoBehaviour {
 	}
 
 	void Update () {
-		
+		if (humanCount == humanCapacity) {
+			MashHumans(humans[0], humans[1]);
+		}
 	}
     void OnMouseOver()
     {
@@ -72,6 +75,30 @@ public class Masher : MonoBehaviour {
 	//masher method, requires two people to be present in machine
 	void MashHumans(GameObject parent1, GameObject parent2)
 	{
+		GameObject child = GameObject.Instantiate (childPrefab, Vector3.zero, Quaternion.identity) as GameObject;
+		Creature childScript = child.GetComponent<Creature> ();
 
+		//set random attributes
+		int randomMat = Random.Range (0, 1);
+		if (randomMat == 0) { //parent 1
+			childScript.currentMat = parent1.GetComponent<Creature>().currentMat;
+		} else { //parent 2
+			childScript.currentMat = parent2.GetComponent<Creature>().currentMat;
+		}
+
+		/*give them random doodads
+		List<GameObject> randomDoodads = new List<GameObject> ();
+		randomDoodads.AddRange (parent1.GetComponent<Creature>().doodads);
+		randomDoodads.AddRange (parent2.GetComponent<Creature>().doodads);
+
+		//rng for number of doodads
+		int rngDoodads = Random.Range (0, randomDoodads.Count);
+
+		//take random elements from list
+		int cap = rngDoodads.Count;
+
+		for (int i = 0; i < rngDoodads; i++) {
+			child.doodads.Add(rngDoodads[Random.Range(0, rngDoodads.Count - 1)]);
+		}*/
 	}
 }
