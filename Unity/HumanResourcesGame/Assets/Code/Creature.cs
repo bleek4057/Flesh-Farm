@@ -9,7 +9,10 @@ public class Creature : MonoBehaviour {
 	public Material currentMat;
 	private int testCount = 0;
 
+    private GameManager gM;
+
 	void Start () {
+        gM = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
 		resourceDoodads = new List<GameObject>();
 		ApplyResource (0);
 	}
@@ -18,6 +21,10 @@ public class Creature : MonoBehaviour {
 
 	}
 
+    void OnMouseDown()
+    {
+        gM.SetSelectedHuman(gameObject);
+    }
 	//get a resource's info based on an Id
 	void ApplyResource(int resourceId){
 		/*ArrayList info = GameObject.FindGameObjectWithTag("GameManager").GetComponent<Constants>().GetResourceInfo (resourceId);

@@ -24,14 +24,45 @@ public class GameManager : MonoBehaviour {
     //Environment
     private GameObject ground;
 
+    //Human Spawning
+    public int initHumans;
+    public GameObject humanPrefab;
+    private GameObject abductionChamber;
+
+    //Humans
+    private List<GameObject> humans;
+    public GameObject selectedHuman;
+    private bool humanSelected;
+
     void Awake()
     {
         ground = GameObject.FindGameObjectWithTag("Ground");
+        abductionChamber = GameObject.FindGameObjectWithTag("AbductionChamber");
     }
 	void Start () {
-	
+        humans = new List<GameObject>();
+        SpawnInitHumans();
 	}
-	
+    public bool SetSelectedHuman(GameObject human)
+    {
+        //returns bool based on whether the human was successfully selected
+        if(human == null || human == selectedHuman){
+            humanSelected = false;
+            selectedHuman = null;
+            return false;
+        }  
+        selectedHuman = human;
+        return true;
+    }
+    void SpawnInitHumans()
+    {
+        for (int i = 0; i < initHumans; i++ )
+        {
+            //Close to the center of the spawning pen
+            Vector3 spawnPos = new Vector3(abductionChamber.transform.position.x + (Random.Range(-1.5f, 1.5f)), 1, abductionChamber.transform.position.z + (Random.Range(-1.5f, 1.5f)));
+            humans.Add(Instantiate(humanPrefab, spawnPos, Quaternion.identity) as GameObject);
+        }
+    }
 	void Update () {
         //If we have selected a building type to place.....
 	    if(placingBuilding){
@@ -46,6 +77,7 @@ public class GameManager : MonoBehaviour {
                         //round out clickLoc values
                         clickLoc.x = Mathf.Round(clickLoc.x);
                         clickLoc.z = Mathf.Round(clickLoc.z);
+                        clickLoc.y = 1.5f;
 
                         SpawnHab(currentSpawnType, clickLoc);
                         placingBuilding = false;
