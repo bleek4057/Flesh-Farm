@@ -13,12 +13,14 @@ public class Creature : MonoBehaviour {
 
     //Human stats
     private List<int> resources;//A list of resources attatched to this human, delimitted by |'s 
+	private bool inMasher;
 
     //Human output
     public float cycleLength;//How long it takes between each drop of revenue from this human
     public float lastCycleEnd;
     public int revenuePerCycle;//How much money this human gives per drop of revenue
     public Building currentBuilding;
+	public Masher currentMasher;
 
     //Human visuals
     public Renderer humanRenderer;
@@ -48,6 +50,9 @@ public class Creature : MonoBehaviour {
     {
         currentBuilding = b;
     }
+	public void SetBuilding(Masher m){
+		currentMasher = m;
+	}
     void OnMouseDown()
     {
         gM.SetSelectedHuman(gameObject);
