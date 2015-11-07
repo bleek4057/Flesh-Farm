@@ -43,6 +43,9 @@ public class GameManager : MonoBehaviour {
 
     public Building scrolledOverBuilding;
 
+    //Mashing
+    public Masher scrolledOverMasher;
+
     //Tutorial
     private int currentTipNumber = 0;
     /*0 - Welcome to your new human factory sir! This is your abduction pen! These are your humans. You're job is to oversee the research on these earthlings for our alien empire!
@@ -152,6 +155,11 @@ public class GameManager : MonoBehaviour {
         if(scrolledOverBuilding != null){
             scrollOverText.GetComponent<Text>().text = scrolledOverBuilding.gameObject.name;
             collectMoneyButton.GetComponent<Text>().text = scrolledOverBuilding.money + "";
+        }
+        if (scrolledOverMasher != null)
+        {
+            scrollOverText.GetComponent<Text>().text = scrolledOverMasher.gameObject.name;
+            //collectMoneyButton.GetComponent<Text>().text = scrolledOverBuilding.money + "";
         }
     }
     public void CollectFromScrolledOverBuilding()
