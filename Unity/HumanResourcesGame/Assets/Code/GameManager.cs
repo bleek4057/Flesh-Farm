@@ -43,6 +43,15 @@ public class GameManager : MonoBehaviour {
 
     public Building scrolledOverBuilding;
 
+    //Tutorial
+    private int currentTipNumber = 0;
+    /*0 - Welcome to your new human factory sir! This is your abduction pen! These are your humans. You're job is to oversee the research on these earthlings for our alien empire!
+     1 - Your humans need to live in habitats. Click on the build button to buy a habitat. Then click on the terrain to place it
+     2 - Now that you've built your building, click on a human to select it
+     3 - Now right click on your building to place your human in it. Your human is now generating income. Hover over the building and click on the button to collect the income
+     4 - We need more humans. Build a people-masher and place two humans inside. It will mash them together and make a baby. The humans might survive.. might.
+     5 - You're doing great! Here are some resources! You can combine people with resources to give them special properties! */
+
     //UI Elements
     public Text moneyText;
     public Text selectedHumanText;
@@ -52,6 +61,12 @@ public class GameManager : MonoBehaviour {
     public GameObject scrollOverPanel;
     public GameObject scrollOverText;
     public GameObject collectMoneyButton;
+
+    public RectTransform tutorialPanel;
+    public Text tutorialText;
+    //public Text tutorialButton;
+
+    public string[] tutorialTips;
 
     void Awake()
     {
@@ -74,8 +89,55 @@ public class GameManager : MonoBehaviour {
         selectedHuman = human;
         return true;
     }
+    public void NextTutorialTip()
+    {
+        currentTipNumber++;
+    }
+    void CheckTutorialConditions()
+    {
+        switch(currentTipNumber){
+            case 0:
+                //Welcome, these are humans
+                MoveTutorialText(abductionChamber.transform.position);
+                
+                break;
+            case 1:
+                //Build a hab
+                    MoveTutorialText(buildPanel.transform.position);
+                break;
+            case 2:
+                //Now place a human in the hab
+                if (buildingCount > 0)
+                {
+                    MoveTutorialText(abductionChamber.transform.position);
+                }
+                break;
+            case 3:
+                GameObject building = GameObject.FindGameObjectWithTag("Building");
+                MoveTutorialText(building.transform.position);
+                break;
+            case 4:
+                //MoveTutorialText();
+                break;
+            case 5:
+                //MoveTutorialText();
+                break;
+            default:
+                tutorialText.GetComponent<Text>().text = "Shits broke son.";
+                break;
+        }
+    }
+    void MoveTutorialText(Vector3 newLoc)
+    {
+        tutorialPanel.anchoredPosition3D = newLoc;
+    }
+    void MoveTutorialText(Vector2 newLoc)
+    {
+        tutorialPanel.position = newLoc;
+    }
     void UpdateUIText()
     {
+        CheckTutorialConditions();
         moneyText.text = "$ " + money;
         if(humanSelected){
             selectedHumanText.text = selectedHuman.name;
@@ -138,6 +200,7 @@ public class GameManager : MonoBehaviour {
     {
         currentSpawnType = habType;
         placingBuilding = true;
+        buildingCount++;
     }
     private void SpawnHab(int habType, Vector3 spawnPos)
     {
