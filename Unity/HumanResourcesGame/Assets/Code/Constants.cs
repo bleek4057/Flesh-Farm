@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class Constants : MonoBehaviour {
 	//needed arrays/lists
-	private static List<GameObject[]> doodadsList;
+	private static GameObject[] doodads;
 	private static List<Material> texturesList;
 
     //Building sizes
@@ -25,33 +25,37 @@ public class Constants : MonoBehaviour {
 	public const int TEARS = 4;
 
 	//Textures:
-	//common
-	public Material sandMaterial;
-	public Material woodMaterial;
-	public Material goldMaterial;
-
-	//rare
-	public Material franciumMaterial;
-
-	//exotic
-	public Material tearsMaterial;
+    public Material[] materials;
+    /*Common
+     0 - Sand
+     * 1 - Wood
+     * 2 - Gold
+     * 
+     Rare
+     3 - Francium
+     * 
+     Exotic
+     4 - Tears
+     */
 
 	//Doodads:
 	//common
-	public GameObject[] sandDoodads;
-	public GameObject[] woodDoodads;
-	public GameObject[] goldDoodads;
+	public GameObject sandDoodad;
+	public GameObject woodDoodad;
+	public GameObject goldDoodad;
 
 	//rare
-	public GameObject[] franciumDoodads;
+	public GameObject franciumDoodad;
 
 	//exotic
-	public GameObject[] tearsDoodads;
+	public GameObject tearsDoodad;
+
+    //Resource revenue rates
+    public int[] resourceRevenueRates;//How much of a bonus each material gets to research points per cycle
 
 	void Awake(){
 		//populate
-		texturesList = new List<Material>{sandMaterial, woodMaterial, goldMaterial, franciumMaterial, tearsMaterial};
-		doodadsList = new List<GameObject[]>{sandDoodads, woodDoodads, goldDoodads, franciumDoodads, tearsDoodads};
+		doodads = new GameObject[]{sandDoodad, woodDoodad, goldDoodad, franciumDoodad, tearsDoodad};
 	}
 
 	void Start () {
@@ -61,14 +65,21 @@ public class Constants : MonoBehaviour {
 	void Update () {
 	
 	}
-
+    public Material GetMat(int resourceId)
+    {
+        return materials[resourceId];
+    }
+    public GameObject GetDoodad(int resourceId)
+    {
+        return doodads[resourceId];
+    }
 	//takes resource Id number and returns coressponing texture and doodads[]
-	public ArrayList GetResourceInfo(int resourceId) {
+	/*public ArrayList GetResourceInfo(int resourceId) {
 		ArrayList resourceInfo = new ArrayList ();
 
 		resourceInfo.Add(texturesList [resourceId]);
 		resourceInfo.Add(doodadsList [resourceId]);
 
 		return resourceInfo;
-	}
+	}*/
 }

@@ -5,16 +5,27 @@ using System.Collections.Generic;
 public class Creature : MonoBehaviour {
 
 	//resource attrtibutes
-	List<GameObject> resourceDoodads;
+	List<GameObject> doodads;
 	public Material currentMat;
 	private int testCount = 0;
 
     private GameManager gM;
 
+    //Human stats
+    private List<int> resources;//A list of resources attatched to this human, delimitted by |'s 
+
+    //Human output
+    public float cycleLength;//How long it takes between each drop of revenue from this human
+    public int revenuePerCycle;//How much money this human gives per drop of revenue
+
+    //Human visuals
+    public Renderer humanRenderer;
+
 	void Start () {
         gM = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
-		resourceDoodads = new List<GameObject>();
-		ApplyResource (0);
+		doodads = new List<GameObject>();
+        resources = new List<int>();
+		ApplyResource (Random.Range(0, 4));
 	}
 
 	void Update () {
@@ -27,6 +38,15 @@ public class Creature : MonoBehaviour {
     }
 	//get a resource's info based on an Id
 	void ApplyResource(int resourceId){
+        resources.Add(resourceId);
+
+        //Set the human's material
+        humanRenderer.material = gM.GetComponent<Constants>().GetMat(resourceId);
+
+        //Add to the human's doodads
+        doodads.Add(gM.GetComponent<Constants>().GetDoodad(resourceId));
+        
+
 		/*ArrayList info = GameObject.FindGameObjectWithTag("GameManager").GetComponent<Constants>().GetResourceInfo (resourceId);
 
 		currentMat = info [0] as Material;
