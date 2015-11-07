@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class Constants : MonoBehaviour {
 	//needed arrays/lists
 	private static GameObject[] doodads;
+
 	private static List<Material> texturesList;
 
     //Building sizes

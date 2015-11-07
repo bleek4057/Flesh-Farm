@@ -46,6 +46,7 @@ public class GameManager : MonoBehaviour {
     //UI Elements
     public Text moneyText;
     public Text selectedHumanText;
+    public Text selectedHumanMoneyPerCycle;
     public GameObject buildPanel;
 
     public GameObject scrollOverPanel;
@@ -78,15 +79,16 @@ public class GameManager : MonoBehaviour {
         moneyText.text = "$ " + money;
         if(humanSelected){
             selectedHumanText.text = selectedHuman.name;
+            selectedHumanMoneyPerCycle.text = "$ " + selectedHuman.GetComponent<Creature>().revenuePerCycle + "/ " + selectedHuman.GetComponent<Creature>().cycleLength + " s";
         }
         else
         {
+            selectedHumanMoneyPerCycle.text = "";
             selectedHumanText.text = "";
         }
         
-
         if(scrolledOverBuilding != null){
-            scrollOverText.GetComponent<Text>().text = gameObject.name;
+            scrollOverText.GetComponent<Text>().text = scrolledOverBuilding.gameObject.name;
             collectMoneyButton.GetComponent<Text>().text = scrolledOverBuilding.money + "";
         }
     }
@@ -106,6 +108,10 @@ public class GameManager : MonoBehaviour {
         }
     }
 	void Update () {
+        //Check to see if we want to deselect the current human by clicking on the terrain
+
+
+
         //If we have selected a building type to place.....
 	    if(placingBuilding){
             //..and if we click....

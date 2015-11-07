@@ -42,7 +42,6 @@ public class Creature : MonoBehaviour {
         {
             currentBuilding.AddRevenue(revenuePerCycle);
             lastCycleEnd = Time.time;
-            print("Creature added Revenue");
         }
     }
     public void SetBuilding(Building b)
