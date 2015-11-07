@@ -30,6 +30,7 @@ public class Building : MonoBehaviour {
         if(Input.GetButtonDown("Fire2")){
             print("Clicked on building: " + gameObject.name);
             AddHuman(gM.selectedHuman);
+            gM.SetSelectedHuman(null);
         }else{
             
         }

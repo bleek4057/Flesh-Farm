@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -34,6 +35,17 @@ public class GameManager : MonoBehaviour {
     public GameObject selectedHuman;
     private bool humanSelected;
 
+    //Resources
+
+    //Revenue
+    public int money;
+    public int moneyPerMinute;
+
+    //UI Elements
+    public Text moneyText;
+    public Text selectedHumanText;
+    public GameObject buildPanel;
+
     void Awake()
     {
         ground = GameObject.FindGameObjectWithTag("Ground");
@@ -50,9 +62,21 @@ public class GameManager : MonoBehaviour {
             humanSelected = false;
             selectedHuman = null;
             return false;
-        }  
+        }
+        humanSelected = true;
         selectedHuman = human;
         return true;
+    }
+    void UpdateUIText()
+    {
+        moneyText.text = "$ " + money;
+        if(humanSelected){
+            selectedHumanText.text = selectedHuman.name;
+        }
+        else
+        {
+            selectedHumanText.text = "";
+        }
     }
     void SpawnInitHumans()
     {
@@ -85,6 +109,7 @@ public class GameManager : MonoBehaviour {
                 }
             }
         }
+        UpdateUIText();
 	}
 
     public void PlaceHab(int habType)
