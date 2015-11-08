@@ -38,6 +38,10 @@ public class GameManager : MonoBehaviour {
     private bool humanSelected;
 
     //Resources
+	public GameObject resourceInventory;
+	public List<string> resourceInvName;
+	public List<int> resourceInvCount;
+	public List<int> resourceInvId;
 
     //Revenue
     public int money;
@@ -73,6 +77,8 @@ public class GameManager : MonoBehaviour {
     public GameObject collectMoneyButtonText;
 	public GameObject infuserPanel;
 
+	public Text[] resourceButtonsText;
+
     public RectTransform tutorialPanel;
     public Text tutorialText;
     //public Text tutorialButton;
@@ -83,6 +89,9 @@ public class GameManager : MonoBehaviour {
     {
         ground = GameObject.FindGameObjectWithTag("Ground");
         abductionChamber = GameObject.FindGameObjectWithTag("AbductionChamber");
+		resourceInvName = new List<string>{"Sand", "Wood", "Gold", "Francium", "Tears"};
+		resourceInvCount = new List<int>{20, 20, 20, 10, 5};
+		resourceInvId = new List<int>{0, 1, 2, 3, 4};
     }
 	void Start () {
         humans = new List<GameObject>();
@@ -194,6 +203,13 @@ public class GameManager : MonoBehaviour {
 				collectMoneyButton.gameObject.SetActive(false);
 			}
         }
+
+		//Component[] buttons = GetComponentsInChildren<Button> ();
+		int i = 0;
+		foreach (Text button in resourceButtonsText) {
+			button.text = "" + resourceInvName[i] + " x " + resourceInvCount[i];
+			i++;
+		}
     }
     public void CollectFromScrolledOverBuilding()
     {
@@ -210,7 +226,10 @@ public class GameManager : MonoBehaviour {
         }
     }
 	public void InfuserSelection(int id){
-		stupidNeededInfuser.GetComponent<Infuser>().Infuse (id);
+		if (resourceInvCount [id] > 0) {
+			stupidNeededInfuser.GetComponent<Infuser> ().Infuse (id);
+			resourceInvCount [id]--;
+		}
 	}
     void SpawnInitHumans()
     {
@@ -287,4 +306,10 @@ public class GameManager : MonoBehaviour {
                 break;
         }
     }
+
+	public void GainResource(string resourceName, int id, int amount){
+		resourceInvName.Add (resourceName);
+		resourceInvCount.Add (amount);
+		resourceInvId.Add (id);
+	}
 }
