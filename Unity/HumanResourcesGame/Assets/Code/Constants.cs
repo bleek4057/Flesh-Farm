@@ -12,6 +12,8 @@ public class Constants : MonoBehaviour {
     public const int BOX_HAB = 0;
     public const int MED_HAB = 1;
     public const int LARGE_HAB = 2;
+    public const int INFUSER = 3;
+    public const int MASHER = 4;
 
 	//Resources:
     public string[] resourceNames;
@@ -54,6 +56,7 @@ public class Constants : MonoBehaviour {
 
     //Resource revenue rates
     public int[] resourceRevenueRates;//How much of a bonus each material gets to research points per cycle
+    public int[] buildingCosts;
 
 	void Awake(){
 		//populate

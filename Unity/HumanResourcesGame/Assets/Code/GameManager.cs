@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour {
     public GameObject boxHab;
     public GameObject mediumHab;
     public GameObject largeHab;
+    public GameObject infuserPrefab;
+    public GameObject masherPrefab;
 
 
     //Placing buildings
@@ -258,6 +260,11 @@ public class GameManager : MonoBehaviour {
     }
     private void SpawnHab(int habType, Vector3 spawnPos)
     {
+        if (gameObject.GetComponent<Constants>().buildingCosts[habType] > money)
+        {
+            return;
+        }
+        money -= gameObject.GetComponent<Constants>().buildingCosts[habType];
         switch (habType)
         {
             case Constants.BOX_HAB:
@@ -268,6 +275,12 @@ public class GameManager : MonoBehaviour {
                 break;
             case Constants.LARGE_HAB:
                 habToSpawn = Instantiate(largeHab, spawnPos, Quaternion.identity) as GameObject;
+                break;
+            case Constants.INFUSER:
+                habToSpawn = Instantiate(infuserPrefab, spawnPos, Quaternion.identity) as GameObject;
+                break;
+            case Constants.MASHER:
+                habToSpawn = Instantiate(masherPrefab, spawnPos, Quaternion.identity) as GameObject;
                 break;
             default:
                 print("Spawning hab parameter ate shit.");
