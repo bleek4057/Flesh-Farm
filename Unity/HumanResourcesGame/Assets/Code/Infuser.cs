@@ -76,13 +76,22 @@ public class Infuser : MonoBehaviour {
 	
 	void MoveHumanToMe(GameObject human)
 	{
-		print("Moving human");
+		/*print("Moving human");
 		float maxX = GetComponent<Collider>().bounds.extents.x;
 		float maxZ = GetComponent<Collider>().bounds.extents.z;
 		
 		
 		Vector3 newPos = new Vector3(transform.position.x + Random.Range(-1.5f, 1.5f), transform.position.y, transform.position.z + Random.Range(-1.5f, 1.5f));
-		human.transform.position = newPos;
+		human.transform.position = newPos;*/
+        Vector3 newPos;
+        RaycastHit hit;
+        //..find the position of the mouse click
+        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 1000))
+        {
+            newPos = hit.point;
+            //Vector3 newPos = new Vector3(transform.position.x + Random.Range(-maxX, maxX), transform.position.y, transform.position.z + Random.Range(-maxZ, maxZ));
+            human.transform.position = newPos;
+        }
 	}
 
 	//method to infuse

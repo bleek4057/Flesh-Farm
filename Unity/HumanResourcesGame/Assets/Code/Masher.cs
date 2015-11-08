@@ -22,6 +22,9 @@ public class Masher : MonoBehaviour {
     private GameManager gM;
 
     public ParticleSystem blood;
+    float startMashTime;
+    public float mashLength;
+    private bool mashing;
 
 	void Start () {
         //GetComponent<Animator>().Stop();
@@ -34,15 +37,28 @@ public class Masher : MonoBehaviour {
 		/*if (humanCount == humanCapacity) {
 			MashHumans(humans[0], humans[1]);
 		}*/
+        if(mashing){
+            if(Time.time >= startMashTime + mashLength){
+                //Its time to stop mashing
+                mashing = false;
+                SetMashAnim(false);
+                MashHumans(humans[0], humans[1]);
+            }
+        }
 	}
     public void SetMashAnim(bool b)
     {
-        blood.enableEmission = b;
+        GetComponent<Animator>().enabled = b;
         if(b){
+            startMashTime = Time.time;
+            blood.enableEmission = b;
+            mashing = true;
             blood.Play();
         }
-
-        GetComponent<Animator>().enabled = b;
+        else
+        {
+            GetComponent<Animator>().Rebind();
+        }
     }
 
     void OnMouseOver()
@@ -82,21 +98,29 @@ public class Masher : MonoBehaviour {
 	
 	void MoveHumanToMe(GameObject human)
 	{
-		float maxX = GetComponent<Collider>().bounds.extents.x;
+		/*float maxX = GetComponent<Collider>().bounds.extents.x;
 		float maxZ = GetComponent<Collider>().bounds.extents.z;
 		
 		Vector3 newPos = new Vector3(transform.position.x + Random.Range(-1.5f, 1.5f), transform.position.y, transform.position.z + Random.Range(-1.5f, 1.5f));
-		human.transform.position = newPos;
+		human.transform.position = newPos;*/
+        Vector3 newPos;
+        RaycastHit hit;
+        //..find the position of the mouse click
+        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 1000))
+        {
+            newPos = hit.point;
+            //Vector3 newPos = new Vector3(transform.position.x + Random.Range(-maxX, maxX), transform.position.y, transform.position.z + Random.Range(-maxZ, maxZ));
+            human.transform.position = newPos;
+        }
 	}
     public void Mash()
     {
         SetMashAnim(true);
-        MashHumans(humans[0], humans[1]);
     }
 	//masher method, requires two people to be present in machine
 	void MashHumans(GameObject parent1, GameObject parent2)
 	{
-		GameObject child = GameObject.Instantiate (childPrefab, Vector3.zero, Quaternion.identity) as GameObject;
+        GameObject child = GameObject.Instantiate(childPrefab, new Vector3(transform.position.x, transform.position.y, transform.position.z - 3), Quaternion.identity) as GameObject;
 		Creature childScript = child.GetComponent<Creature> ();
 
 		//set random attributes

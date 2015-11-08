@@ -119,7 +119,7 @@ public class GameManager : MonoBehaviour {
             case 0:
                 //Welcome, these are humans
                 MoveTutorialText(abductionChamber.transform.position);
-                tutorialText.text = "Welcome to Earthling Research Base 9 sir!\nHere we conduct tests on humans. A new batch has just arrived in the abduction pen! Build a habiat to move them into so we can start generating research points!";
+                tutorialText.text = "Welcome to Earthling Research Base 9 sir! Here we conduct tests on humans. A new batch has just arrived in the abduction pen! Build a habiat to move them into so we can start generating research points! Hold the middle mouse button and drag to move. To build a building, open the build menu, click the building you want, then click on the ground where you want to place it. Click on a human to select it, then right click on a habitat to place it.";
                 break;
             case 1:
                 //Build a hab
@@ -172,6 +172,9 @@ public class GameManager : MonoBehaviour {
         if(scrolledOverBuilding != null){
             scrollOverText.GetComponent<Text>().text = scrolledOverBuilding.gameObject.name;
             collectMoneyButtonText.GetComponent<Text>().text = scrolledOverBuilding.money + "";
+
+            collectMoneyButton.gameObject.SetActive(true);
+
         }
         if (scrolledOverMasher != null)
         {
@@ -235,8 +238,11 @@ public class GameManager : MonoBehaviour {
     {
         for (int i = 0; i < initHumans; i++ )
         {
+            float maxX = abductionChamber.GetComponent<Renderer>().bounds.extents.x;
+            float maxZ = abductionChamber.GetComponent<Renderer>().bounds.extents.z;
+
             //Close to the center of the spawning pen
-            Vector3 spawnPos = new Vector3(abductionChamber.transform.position.x + (Random.Range(-3.5f, 3.5f)), 1, abductionChamber.transform.position.z + (Random.Range(-3.5f, 3.5f)));
+            Vector3 spawnPos = new Vector3(abductionChamber.transform.position.x + (Random.Range(-maxX + 2, maxX - 2)), 1, abductionChamber.transform.position.z + (Random.Range(-maxZ + 2, maxZ - 2)));
             GameObject human = Instantiate(humanPrefab, spawnPos, Quaternion.identity) as GameObject;
             
             //human.GetComponent<Creature>().ApplyResource(Random.Range(0, 4));
