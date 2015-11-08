@@ -82,6 +82,11 @@ public class Building : MonoBehaviour {
             //Vector3 newPos = new Vector3(transform.position.x + Random.Range(-maxX, maxX), transform.position.y, transform.position.z + Random.Range(-maxZ, maxZ));
             human.transform.position = newPos;
         }       
+
+        if (gM.tutorialComplete == false && gM.currentTipNumber == 4)
+        {
+            gM.NextTutorialTip();
+        }
     }
 
 	public void RemoveHuman(GameObject human){

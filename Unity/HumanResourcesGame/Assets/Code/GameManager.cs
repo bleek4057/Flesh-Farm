@@ -36,6 +36,8 @@ public class GameManager : MonoBehaviour {
     private List<GameObject> humans;
     public GameObject selectedHuman;
     private bool humanSelected;
+    public int humanRespawnTimer;
+    public int abductionChamberCount;
 
     //Resources
 	public GameObject resourceInventory;
@@ -57,7 +59,8 @@ public class GameManager : MonoBehaviour {
 	private Infuser stupidNeededInfuser;
 
     //Tutorial
-    private int currentTipNumber = 0;
+    public bool tutorialComplete;
+    public int currentTipNumber = 0;
     /*0 - Welcome to your new human factory sir! This is your abduction pen! These are your humans. You're job is to oversee the research on these earthlings for our alien empire!
      1 - Your humans need to live in habitats. Click on the build button to buy a habitat. Then click on the terrain to place it
      2 - Now that you've built your building, click on a human to select it
@@ -81,7 +84,8 @@ public class GameManager : MonoBehaviour {
 
     public RectTransform tutorialPanel;
     public Text tutorialText;
-    //public Text tutorialButton;
+    public GameObject tutorialButton;
+    public GameObject endTutorialButton;
 
     public string[] tutorialTips;
 
@@ -90,7 +94,7 @@ public class GameManager : MonoBehaviour {
         ground = GameObject.FindGameObjectWithTag("Ground");
         abductionChamber = GameObject.FindGameObjectWithTag("AbductionChamber");
 		resourceInvName = new List<string>{"Sand", "Wood", "Gold", "Francium", "Tears"};
-		resourceInvCount = new List<int>{20, 20, 20, 10, 5};
+		resourceInvCount = new List<int>{0, 0, 0, 0, 0};
 		resourceInvId = new List<int>{0, 1, 2, 3, 4};
     }
 	void Start () {
@@ -118,29 +122,79 @@ public class GameManager : MonoBehaviour {
         switch(currentTipNumber){
             case 0:
                 //Welcome, these are humans
-                MoveTutorialText(abductionChamber.transform.position);
-                tutorialText.text = "Welcome to Earthling Research Base 9 sir! Here we conduct tests on humans. A new batch has just arrived in the abduction pen! Build a habiat to move them into so we can start generating research points! Hold the middle mouse button and drag to move. To build a building, open the build menu, click the building you want, then click on the ground where you want to place it. Click on a human to select it, then right click on a habitat to place it.";
+                    tutorialPanel.anchoredPosition3D = new Vector3(0, 100, 0);
+                    tutorialPanel.sizeDelta = new Vector2(350, 100);
+                    tutorialText.rectTransform.anchoredPosition = new Vector3(0, 3, 0);
+                    tutorialText.rectTransform.sizeDelta = new Vector2(320, 70);
+                    tutorialText.text = "Welcome. This is your new research facility. You have been contracted to perform experiments and gather information regarding humans. Let's begin by showing you around.";
                 break;
             case 1:
-                //Build a hab
-                    MoveTutorialText(buildPanel.transform.position);
+                //derp
+                    tutorialPanel.anchoredPosition3D = new Vector3(-110, 85, 0);
+                    tutorialPanel.sizeDelta = new Vector2(250, 100);
+                    tutorialText.rectTransform.anchoredPosition = new Vector3(0, 0, 0);
+                    tutorialText.rectTransform.sizeDelta = new Vector2(230, 80);
+                    tutorialText.text = "These things here, as you can see, are humans. We will supply you with humans while you are contracted with us.";
                 break;
             case 2:
-                //Now place a human in the hab
-                if (buildingCount > 0)
-                {
-                    MoveTutorialText(abductionChamber.transform.position);
-                }
+                //Build a hab
+                    tutorialPanel.anchoredPosition3D = new Vector3(340, 320, 0);
+                    tutorialPanel.sizeDelta = new Vector2(300, 120);
+                    tutorialText.rectTransform.anchoredPosition = new Vector3(0, 16, 0);
+                    tutorialText.rectTransform.sizeDelta = new Vector2(280, 80);
+                    tutorialButton.SetActive(false);
+                    tutorialText.text = "You need to hold your humans inside something. We can't let them wander the facility. Click the 'Build' button and build select the 'White Box'.";
                 break;
             case 3:
-                GameObject building = GameObject.FindGameObjectWithTag("Building");
-                MoveTutorialText(building.transform.position);
+                //pointless congratz :P
+                    tutorialText.text = "Good, now click anywhere in the facility to place the habitat.";
                 break;
             case 4:
-                //MoveTutorialText();
+                //place human
+                    tutorialText.text = "Doesn't that box look comfy? Try putting one of your humans in it. Left-Click the human to select it, then Right-Click in the box to place it.";
                 break;
             case 5:
-                //MoveTutorialText();
+                //derp
+                    tutorialButton.SetActive(true);
+                    tutorialText.text = "Nicely done. Now here's what we want you to do. Study that human. How does he react?";
+                break;
+            case 6:
+                //Explain Income
+                    tutorialButton.SetActive(false);
+                    tutorialText.text = "How you accomplish this is by collecting the 'Research Points' you gain from studying the human. You can collect 'Research Points' by Left-Clicking on the habitat.";
+
+                    if (money >= 1000) NextTutorialTip();
+                break;
+            case 7:
+                //Infuser Tutorial
+                    tutorialText.text = "Studying 'Normal' humans can get quite boring. So we've invented a machine to 'Infuse' humans with certain resources. Go buy one now!";
+                break;
+            case 8:
+                //Infuser Tutorial Cont.
+                    tutorialText.text = "Look at that beautiful piece of machinery. Now, take another human in the box and place him in the Infuser. Once there, Infuse him with this piece of sand.";
+                break;
+            case 9:
+                //Infuser Tutorial Cont.
+                    tutorialText.text = "Look at what you've done! It's magnificent! Quick, do it again to the human in the box, except use this piece of wood! (You may need additional habitats. A white box can only hold 1 human)";
+                break;
+            case 10:
+                //Masher Tutorial
+                    tutorialText.text = "Now that you have 2 infused humans. LET'S MASH THEM TOGETHER! For... research of course. Just go buy a Masher... This one's on the house.";
+                break;
+            case 11:
+                //Masher Tutorial Cont.
+                    tutorialText.text = "This wonderful piece of machinery takes two infused humans, and mashes them together to make a... 'baby'. Don't worry, our technological advancements will ensure the 'parents' will be safe. Go try it out!";
+                break;
+            case 12:
+                //Masher Tutorial Cont. --- Demo End
+                    endTutorialButton.SetActive(true);
+                    tutorialText.text = "Congratulations! You've created that wonderful... 'baby'. You've also learned basically all you need to know how to do for this Demo! Enjoy the game!";
+                break;
+            case 13:
+                //Demo End --- GG
+                    resourceInvCount = new List<int> { 20, 20, 20, 10, 5 };
+                    tutorialComplete = true;
+                    this.GetComponent<Constants>().buildingCosts[4] = 2000;
                 break;
             default:
                 tutorialText.GetComponent<Text>().text = "Shits broke son.";
@@ -157,7 +211,10 @@ public class GameManager : MonoBehaviour {
     }
     void UpdateUIText()
     {
-        CheckTutorialConditions();
+        if (!tutorialComplete)
+        {
+            CheckTutorialConditions();
+        }
         moneyText.text = "$ " + money;
         if(humanSelected){
             selectedHumanText.text = selectedHuman.name;
@@ -232,6 +289,15 @@ public class GameManager : MonoBehaviour {
 		if (resourceInvCount [id] > 0) {
 			stupidNeededInfuser.GetComponent<Infuser> ().Infuse (id);
 			resourceInvCount [id]--;
+
+            if (tutorialComplete == false && (currentTipNumber == 8 || currentTipNumber == 9))
+            {
+                if (currentTipNumber == 8)
+                {
+                    resourceInvCount[1]++;
+                }
+                NextTutorialTip();
+            }
 		}
 	}
     void SpawnInitHumans()
@@ -248,6 +314,7 @@ public class GameManager : MonoBehaviour {
             //human.GetComponent<Creature>().ApplyResource(Random.Range(0, 4));
 
             humans.Add(human);
+            abductionChamberCount = 5;
         }
     }
 	void Update () {
@@ -275,10 +342,37 @@ public class GameManager : MonoBehaviour {
             }
         }
         UpdateUIText();
+
+        //human timer resolution, after 1 min, add new human to abduction pool, max of 5
+        if (abductionChamberCount < 5)
+        {
+            humanRespawnTimer++;
+        }
+        else humanRespawnTimer = 0;
+
+        if (humanRespawnTimer >= 3600)
+        {
+            float maxX = abductionChamber.GetComponent<Renderer>().bounds.extents.x;
+            float maxZ = abductionChamber.GetComponent<Renderer>().bounds.extents.z;
+
+            //Close to the center of the spawning pen
+            Vector3 spawnPos = new Vector3(abductionChamber.transform.position.x + (Random.Range(-maxX + 2, maxX - 2)), 1, abductionChamber.transform.position.z + (Random.Range(-maxZ + 2, maxZ - 2)));
+            GameObject human = Instantiate(humanPrefab, spawnPos, Quaternion.identity) as GameObject;
+
+            humans.Add(human);
+            abductionChamberCount++;
+            humanRespawnTimer = 0;
+        }
 	}
 
     public void PlaceHab(int habType)
     {
+        //check if this is fulfilling tutorial req
+        if (habType == 0 && !tutorialComplete && currentTipNumber == 2)
+        {
+            NextTutorialTip();
+        }
+
         currentSpawnType = habType;
         placingBuilding = true;
         buildingCount++;
@@ -310,6 +404,16 @@ public class GameManager : MonoBehaviour {
             default:
                 print("Spawning hab parameter ate shit.");
                 break;
+        }
+
+        //check if this is fulfilling tutorial req
+        if (!tutorialComplete && ((currentTipNumber == 3 && habType == 0)  || (currentTipNumber == 7 && habType == 3) || (currentTipNumber == 10 && habType == 4)))
+        {
+            if (currentTipNumber == 7 && habType == 3)
+            {
+                resourceInvCount[0]++;
+            }
+            NextTutorialTip();
         }
     }
 

@@ -146,6 +146,11 @@ public class Masher : MonoBehaviour {
 		for (int i = 0; i < rngDoodads; i++) {
 			child.doodads.Add(rngDoodads[Random.Range(0, rngDoodads.Count - 1)]);
 		}*/
+
+        if (gM.tutorialComplete == false && gM.currentTipNumber == 11)
+        {
+            gM.NextTutorialTip();
+        }
 	}
 
 	public void RemoveHuman(GameObject human){

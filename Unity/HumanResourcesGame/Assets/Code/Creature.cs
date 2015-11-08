@@ -71,7 +71,14 @@ public class Creature : MonoBehaviour {
         currentBuilding = null;
         currentMasher = null;
     }
-	public void Leave(){
+    public void Leave()
+    {
+        //check to see if it's the first move. If so, moving from abduction, decrement count
+        if (currentBuilding == null && currentMasher == null && currentInfuser == null) //derp
+        {
+            gM.abductionChamberCount--;
+        }
+
 		if(currentBuilding != null){
 			currentBuilding.GetComponent<Building>().RemoveHuman(gameObject);
 			currentBuilding = null;
