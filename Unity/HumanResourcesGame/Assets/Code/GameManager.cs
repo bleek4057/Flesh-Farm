@@ -81,6 +81,7 @@ public class GameManager : MonoBehaviour {
 	public GameObject infuserPanel;
 
 	public Text[] resourceButtonsText;
+    public Text[] resourceInvTexts;
 
     public RectTransform tutorialPanel;
     public Text tutorialText;
@@ -270,6 +271,13 @@ public class GameManager : MonoBehaviour {
 			button.text = "" + resourceInvName[i] + " x " + resourceInvCount[i];
 			i++;
 		}
+
+        i = 0;
+        foreach (Text label in resourceInvTexts)
+        {
+            label.text = "" + resourceInvName[i] + " x " + resourceInvCount[i];
+            i++;
+        }
     }
     public void CollectFromScrolledOverBuilding()
     {
