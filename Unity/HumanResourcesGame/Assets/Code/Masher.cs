@@ -16,11 +16,16 @@ public class Masher : MonoBehaviour {
 	private List<GameObject> humans;
 
     private bool scrolledOver;
+    public bool playingAnimation;
 
     //Util
     private GameManager gM;
 
+    public ParticleSystem blood;
+
 	void Start () {
+        //GetComponent<Animator>().Stop();
+        SetMashAnim(false);
         gM = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         humans = new List<GameObject>();
 	}
@@ -30,6 +35,16 @@ public class Masher : MonoBehaviour {
 			MashHumans(humans[0], humans[1]);
 		}*/
 	}
+    public void SetMashAnim(bool b)
+    {
+        blood.enableEmission = b;
+        if(b){
+            blood.Play();
+        }
+
+        GetComponent<Animator>().enabled = b;
+    }
+
     void OnMouseOver()
     {
         gM.scrolledOverMasher = this;
@@ -67,17 +82,15 @@ public class Masher : MonoBehaviour {
 	
 	void MoveHumanToMe(GameObject human)
 	{
-        print("Moving human");
 		float maxX = GetComponent<Collider>().bounds.extents.x;
 		float maxZ = GetComponent<Collider>().bounds.extents.z;
-		
 		
 		Vector3 newPos = new Vector3(transform.position.x + Random.Range(-1.5f, 1.5f), transform.position.y, transform.position.z + Random.Range(-1.5f, 1.5f));
 		human.transform.position = newPos;
 	}
     public void Mash()
     {
-        print("Mash!");
+        SetMashAnim(true);
         MashHumans(humans[0], humans[1]);
     }
 	//masher method, requires two people to be present in machine

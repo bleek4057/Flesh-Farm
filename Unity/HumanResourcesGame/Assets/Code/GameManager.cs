@@ -274,7 +274,7 @@ public class GameManager : MonoBehaviour {
                 habToSpawn = Instantiate(mediumHab, spawnPos, Quaternion.identity) as GameObject;
                 break;
             case Constants.LARGE_HAB:
-                habToSpawn = Instantiate(largeHab, spawnPos, Quaternion.identity) as GameObject;
+                habToSpawn = Instantiate(largeHab, spawnPos, Quaternion.identity) as GameObject;  
                 break;
             case Constants.INFUSER:
                 habToSpawn = Instantiate(infuserPrefab, spawnPos, Quaternion.identity) as GameObject;
